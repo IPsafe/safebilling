@@ -1,0 +1,7 @@
+{% extends "admin/index.html" %}
+{% load sysmon_tags %}
+{% block content %}
+{% get_system_stats %}
+
+{{ block.super }}
+{% endblock %}

@@ -1,0 +1,4 @@
+Data;Usuário;Device;Destino;Provedor;LCR;Duração;Valor Usuário;Valor Provedor;Lucro;Hangup Cause;Hangup Disposition
+
+{% for obj in cdr %}{{ obj.start_time|date:"d/m/Y H:i:s" }};{{ obj.customer }};{{ obj.device }};{{ obj.destination_number }};{{ obj.provider }};{{ obj.lcr_name }};{{ obj.billsec }};{{ obj.user_cost }};{{ obj.provider_cost }};{{ obj.profit }};{{ obj.hangup_cause }} <{{ obj.hangup_cause_q850 }}>;{{ obj.hangup_disposition }}
+{%endfor%}

@@ -1,0 +1,340 @@
+{% load admin_static bootstrapped_goodies_tags %}{% load url from future %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>IPsafe</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">    
+
+    <link href="{{ STATIC_URL }}css/bootstrap.css" rel="stylesheet">
+    <link href="{{ STATIC_URL }}css/bootstrap-responsive.min.css" rel="stylesheet">
+
+    <!-- <link href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600" rel="stylesheet"> -->
+    <link href="{{ STATIC_URL }}css/google-fonts.css" rel="stylesheet">        
+    <link href="{{ STATIC_URL }}css/font-awesome.min.css" rel="stylesheet">        
+
+    <link href="{{ STATIC_URL }}css/ui-lightness/jquery-ui-1.10.0.custom.min.css" rel="stylesheet">
+
+    <link href="{{ STATIC_URL }}css/base-admin-2.css" rel="stylesheet">
+    <link href="{{ STATIC_URL }}css/base-admin-2-responsive.css" rel="stylesheet">
+
+    <link href="{{ STATIC_URL }}css/pages/dashboard.css" rel="stylesheet">   
+
+    <link href="{{ STATIC_URL }}css/custom.css" rel="stylesheet">
+    <link href="{{ STATIC_URL }}css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+
+    <link href="{{ STATIC_URL }}admin/css/select2.css" rel="stylesheet">
+
+    <script src="{{ STATIC_URL }}js/jquery-1.9.1.js"></script>
+    <script src="{{ STATIC_URL }}js/jquery-ui.js"></script>
+    <script src="{{ STATIC_URL }}js/jquery.formset.min.js" type="text/javascript"></script>
+
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+      <![endif]-->
+
+    
+
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    {% block extrastyle %}{% endblock %}
+
+    <!-- Le styles, placed after extrastyle to correctly override default styling 
+    <link href="{% static "bootstrap/css/bootstrap.min.css" %}" rel="stylesheet"/>
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+    </style>
+    <link href="{% static "bootstrap/css/bootstrap-responsive.min.css" %}" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="{% static "admin/css/overrides.sgcs" %}" />
+
+    <!-- <link rel="stylesheet" type="text/css" href="{% block stylesheet %}{% static "admin/css/base.css" %}{% endblock %}" /> -->
+    <script type="text/javascript">
+    //<![CDATA[
+        window.__admin_media_prefix__ = "{% filter escapejs %}{% static "admin/" %}{% endfilter %}";
+    //]]>
+    </script>
+
+    {% block extrahead %}{% endblock %}
+
+    {% block blockbots %}<meta name="robots" content="NONE,NOARCHIVE" />{% endblock %}
+    <script type="text/javascript">
+    //<![CDATA[
+            (function($) {
+                $(document).ready(function() {
+                    $('input[type="submit"]').addClass('bstn');
+                    $('[title]').tooltip();
+                });
+            }(jQuery));
+    //]]>
+    </script>
+</head>
+{% load i18n %}
+
+
+
+<body class="{% if is_popup %}popup {% endif %}{% block bodyclass %}{% endblock %}">
+
+    {% if not is_popup %}
+    <div class="navbar navbar-inverse navbar-fixed-top">
+
+        <div class="navbar-inner">
+
+            <div class="container">
+
+                <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                    <i class="icon-cog"></i>
+                </a>
+
+                <a class="brand" href="/">
+                    <img src="{{ STATIC_URL }}img/ipsafe.png"/> <sup></sup>
+                </a>        
+
+                <div class="nav-collapse collapse">
+                    <ul class="nav pull-right">
+                        <li class="dropdown">
+                            {% if user.is_authenticated %}
+                            <a href="index.html#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="icon-cog"></i>
+                                Configurações - {{ user }}
+                                <b class="caret"></b>
+                            </a>
+
+                            <ul class="dropdown-menu">
+                                <li><a href="/auth/user/{{ request.user.id }}">Conta</a></li>
+                                <li><a href="javascript:;">Configurações Gerais</a></li>
+                                <li class="divider"></li>
+                                <li><a href="/logout">Sair</a></li>
+                            </ul>
+
+                            {% endif %}
+
+                        </li>
+
+
+                    </ul>
+                    {% if user.is_authenticated %}
+                    <form class="navbar-search pull-right">
+                        <input type="text" class="search-query" placeholder="Pesquisar">
+                    </form>
+                    {% endif %}
+
+                </div><!--/.nav-collapse -->    
+
+            </div> <!-- /container -->
+
+        </div> <!-- /navbar-inner -->
+
+    </div> <!-- /navbar -->
+
+
+
+
+
+
+    <div class="subnavbar">
+        <div class="subnavbar-inner">
+            <div class="container">
+                
+                <a class="btn-subnavbar collapsed" data-toggle="collapse" data-target=".subnav-collapse">
+                    <i class="icon-reorder"></i>
+                </a>
+                <div class="subnav-collapse collapse">
+                    <ul class="mainnav">
+
+                        <li class="{% if not opts.object_name.lower and not view %}active{% endif %}">
+                            <a href="/">
+                                <i class="icon-home"></i>
+                                <span>Principal</span>
+                            </a>                        
+                        </li>
+          
+              {% if user.is_authenticated %}
+              {% if perms.core.add_user or perms.core.change_user or perms.core.delete_user %}
+                        <li class="dropdown {% if 'customer' in opts.object_name.lower %}active{% endif %}">
+                            <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="icon-user"></i>
+                                    <span>Clientes</span>
+                                <b class="caret"></b>
+                            </a>        
+
+                            <ul class="dropdown-menu">
+                                <li><a href="/core/customer/">Listar</a></li>
+                                {% if perms.core.add_user %}<li><a href="/core/customer/add">Adicionar</a></li>{% endif %}
+
+                                <li class="divider"></li>
+                                <li><a href="/auth/user/">Usuários</a></li>                                
+                                <li><a href="/auth/group/">Grupos</a></li>                                
+
+                            </ul>   
+                        </li>
+              {% endif %}
+
+
+              {% if perms.core.add_providers or perms.core.change_providers or perms.core.delete_providers %}
+                        <li class="dropdown {% if 'provider' in opts.object_name.lower %}active{% endif %}">                   
+                            <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="icon-sitemap"></i>
+                                <span>Provedores</span>
+                                <b class="caret"></b>
+                            </a>        
+
+                            <ul class="dropdown-menu">
+                                <li><a href="/core/provider/">Listar</a></li>
+                                {% if perms.core.add_providers %}<li><a href="/core/provider/add/">Adicionar</a></li>{% endif %}
+                            </ul>               
+                        </li>
+              {% endif %}
+
+              {% if perms.core.add_inboundroutes or perms.core.change_inboundroutes or perms.core.delete_inboundroutes %}
+                        <li class="{% if 'inboundroute' in opts.object_name.lower %}active{% endif %}">
+                            <a href="/core/inboundroute/">
+                                <i class="icon-signin"></i>
+                                <span>DID</span>
+                            </a>                        
+                        </li>
+              {% endif %}
+
+              {% if perms.core.add_lcr or perms.core.change_lcr or perms.core.delete_lcr %}
+                        <li class="{% if 'lcr' in opts.object_name.lower %}active{% endif %}">
+                            <a href="/core/lcr/">
+                                <i class="icon-signout"></i>
+                                <span>LCR</span>
+                            </a>                        
+                        </li>
+              {% endif %}
+
+              {% if perms.core.add_dialrulesgroups or perms.core.change_dialrulesgroups or perms.core.delete_dialrulesgroups %}
+                        <li class="{% if 'dialrule' in opts.object_name.lower %}active{% endif %}">
+                            <a href="/core/dialrulegroup/">
+                                <i class="icon-th"></i>
+                                <span>Regras de Discagem</span>
+                            </a>                        
+                        </li>
+
+              {% endif %}        
+
+              {% if perms.core.add_rates or perms.core.change_rates or perms.core.delete_rates %}
+                        <li class="{% if 'rategroup' in opts.object_name.lower %}active{% endif %}">
+                            <a href="/core/rategroup/">
+                                <i class="icon-money"></i>
+                                <span>Tarifas</span>
+                            </a>                        
+                        </li>
+
+            {% endif %}
+        
+              <li class="{% if 'report' in view %}active{% endif %}">
+                <a href="/report">
+                  <i class="icon-list-alt"></i>
+                  <span>CDR</span>
+                </a>              
+              </li>
+
+                    </ul>
+                </div> <!-- /.subnav-collapse -->
+
+            {% endif %} <!-- autentication -->
+            </div> <!-- /container -->
+
+        </div> <!-- /subnavbar-inner -->
+
+    </div> <!-- /subnavbar -->
+
+
+    {% endif %}
+
+    <div class="main">
+
+        <div class="container" {% if 'reportResults' in view %}style="width: 98%"{% endif %}>
+        <!-- Container -->
+    
+
+    <!-- Content -->
+
+
+<div class="widget">
+    <!-- <div class="widget-header">
+        <i class="icon-wrench"></i>
+        <h3>Administração</h3>
+    </div>
+    -->
+
+
+    <div class="widget-content">
+            {% block breadcrumbs %}
+            {% endblock %}
+        {% block object-tools %}{% endblock %}
+        {% block messages %}
+        {% if messages %}
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="alert alert-info">
+                    <ul class="unstyled">
+                        {% for message in messages %}
+                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% endblock messages %}
+
+        {% block content %}{{ content }}{% endblock %}
+        {% block sidebar %}{% endblock %}
+
+    </div>
+</div></div>
+    <!-- END Content -->
+
+
+</div>
+<!-- END Container -->
+
+    <div class="footer">
+
+        <div class="container">
+
+            <div class="row">
+
+                <div id="footer-copyright" class="span6">
+                    &copy; IPsafe.
+                </div> <!-- /span6 -->
+
+                <div id="footer-terms" class="span6">
+                    <a href="http://www.ipsafe.com.br" target="_blank">www.ipsafe.com.br</a>
+                </div> <!-- /.span6 -->
+
+            </div> <!-- /row -->
+
+        </div> <!-- /container -->
+
+    </div> <!-- /footer -->
+
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/DT_bootstrap.css"/>
+<script type="text/javascript" charset="utf-8" language="javascript" src="{{ STATIC_URL }}js/jquery.dataTables.js"></script>
+<script type="text/javascript" charset="utf-8" language="javascript" src="{{ STATIC_URL }}js/DT_bootstrap.js"></script>
+<script type="text/javascript" charset="utf-8" language="javascript" src="{{ STATIC_URL }}js/functions.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" charset="utf-8" language="javascript" src="{{ STATIC_URL }}admin/js/popup_reload_selects.js"></script>
+<script type="text/javascript" charset="utf-8" language="javascript" src="{{ STATIC_URL }}admin/js/select2.js"></script>
+<script src="{{ STATIC_URL }}js/libs/bootstrap.min.js"></script>
+{% block js %}{% endblock %}
+
+<a id="back-to-top" href="#top" style="display: block;">
+    <i class="icon-chevron-up"></i>
+</a>
+
+</body>
+</html>
+
+
+</html>

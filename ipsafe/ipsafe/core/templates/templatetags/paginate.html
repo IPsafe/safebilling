@@ -1,0 +1,40 @@
+{% if page_obj.object_list %}
+    <div class="pagination notopmargin">
+        <ul>
+        	{% if page_obj.has_previous %}
+        		<li>
+            		<a href="?page=1">Primeira</a>
+            	</li>
+        	{% endif %}
+
+        	{% if page_obj.has_previous %}
+        		<li>
+            		<a href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+            	</li>
+        	{% endif %}
+
+            {% for page in paginator.page_range %}
+            	{% if page_obj.number < page|add:"20" and page_obj.number > page|add:"-20"%}
+            		<li{% if page_obj.number == page %} class="active" {% endif %}>
+                		<a href="?page={{ page }}{{ getvars }}">{{ page }}</a>
+            		</li>
+            	{%endif %}
+
+            {% endfor %}
+
+        	{% if page_obj.has_next %}
+        		<li>
+            		<a href="?page={{ page_obj.next_page_number }}">Próxima</a>
+            	</li>
+        	{% endif %}
+
+            <li{% if page_obj.number == page %} class="active" {% endif %}>
+            	<a href="?page={{ paginator.num_pages }}">Última</a>
+            </li>
+
+        </ul>
+    </div>
+{% endif %}
+
+
+      

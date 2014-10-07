@@ -1,0 +1,96 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_static admin_modify bootstrapped_goodies_tags %}
+{% load url from future %}
+{% load admin_urls %}
+{% block content %}
+
+
+	<form class="form-horizontal" action="/report/results/" method="POST">
+		{% csrf_token %}
+			<fieldset>
+				<legend>
+					Pesquisa
+				</legend>
+				<div class="control-group">
+					<label class="control-label">Data/Hora Início</label>
+					<div class="controls">
+						<div id="start_time" class="input-append date">
+							<input id="start_time" name="start_time" data-format="dd/MM/yyyy hh:mm:ss" type="text">
+						</input> <span class="add-on"> <i data-time-icon="icon-time" data-date-icon="icon-calendar"> </i> </span>
+					</div>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">Data/Hora Fim</label>
+				<div class="controls">
+					<div id="end_time" class="input-append date">
+						<input id="end_time" name="end_time" data-format="dd/MM/yyyy hh:mm:ss" type="text">
+					</input> <span class="add-on"> <i data-time-icon="icon-time" data-date-icon="icon-calendar"> </i> </span>
+				</div>
+			</div>
+		</div>
+
+		<div class="control-group">
+			<label class="control-label">Cliente</label>
+			<div class="controls">
+				{{ form.description.errors }}
+				{{ form.customer }}
+			</div>
+		</div>
+
+		<div class="control-group">
+			<label class="control-label">Device</label>
+			<div class="controls">
+				{{ form.device.errors }}
+				{{ form.device }}
+			</div>
+		</div>
+
+		<div class="control-group">
+			<label class="control-label">Provedor</label>
+			<div class="controls">
+				{{ form.provider.errors }}
+				{{ form.provider }}
+			</div>
+		</div>
+
+		<div class="control-group">
+			<label class="control-label">Gateway</label>
+			<div class="controls">
+				{{ form.gateway.errors }}
+				{{ form.gateway }}
+			</div>
+		</div>
+
+		<!-- Text input-->
+		<div class="control-group">
+			<label class="control-label">Destino</label>
+			<div class="controls">
+				<input id="destination_number" name="destination_number" type="text" placeholder="Número de destino" class="input-xlarge" >
+			</div>
+		</div>
+
+		<!-- Button -->
+		<div class="control-group">
+			<label class="control-label"></label>
+			<div class="controls">
+				<button id="singlebutton" name="singlebutton" class="btn btn-success">
+					Pesquisar
+				</button>
+			</div>
+		</fieldset>
+	</form>
+
+<script type="text/javascript">
+$(function() {
+	$('#start_time').datetimepicker({
+		language : 'pt-BR'
+	});
+	$('#end_time').datetimepicker({
+		language : 'pt-BR'
+	});
+});
+
+</script>
+
+{% endblock %} 

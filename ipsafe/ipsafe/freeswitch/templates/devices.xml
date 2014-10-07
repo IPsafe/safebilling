@@ -1,0 +1,45 @@
+{% for obj in list %}
+
+<include>
+  <user id="{{ obj.name }}" {% if obj.host %}cidr="{{obj.host}}/32"{% endif %}>
+    <params>
+      {% if obj.password %}
+      <param name="password" value="{{ obj.password }}"/>
+      <param name="vm-password" value="{{  obj.password }}"/>
+      {% endif %}
+
+      <param name="inbound-codec-prefs" value="{{ obj.codec_inbound_string }}"/>
+      <param name="outbound-codec-prefs" value="{{ obj.codec_outbound_string }}"/>
+
+    </params>
+    <variables>
+      <variable name="toll_allow" value="{{ toll_allow }}"/>
+      <variable name="accountcode" value="{{ obj.name }}"/>
+      {% if obj.host %}<variable name="auth-acl" value="{{ obj.host }}/32"/>{% endif %}
+      <variable name="user_context" value="default"/>
+      {% if obj.callerid %}<variable name="effective_caller_id_name" value="{{ obj.callerid }}"/>{% endif %}
+      {% if obj.callerid_number %}<variable name="effective_caller_id_number" value="{{ obj.callerid_number }}"/>{% endif %}
+      {% if obj.callerid %}<variable name="outbound_caller_id_name" value="{{ obj.callerid }}"/>{% endif %}
+      {% if obj.callerid_number %}<variable name="outbound_caller_id_number" value="{{ obj.callerid_number }}"/>{% endif %}
+      <variable name="callgroup" value="safebilling"/>
+
+      <variable name="device_id" value="{{ obj.id }}"/>
+      <variable name="device_name" value="{{ obj.name }}"/>
+      <variable name="customer_id" value="{{ obj.customer_id }}"/>
+      {% for userobj in obj.userinfo %}
+      <variable name="lcr" value="{{ userobj.lcr_id }}"/>
+      <variable name="lcr_name" value="{{ userobj.lcr }}"/>
+      <variable name="rategroup" value="{{ userobj.rate_groups_id }}"/>
+      <variable name="max_calls" value="{{ userobj.activecalls_limit }}"/>
+      <variable name="calls_per_second" value="{{ userobj.calls_per_second }}"/>
+      <variable name="postpaid_limit" value="{{ userobj.postpaid_limit }}"/>
+      {% endfor %}
+      <variable name="dialrules" value="{{ obj.dialrules_groups_id }}"/>
+      <variable name="force_monitor" value="{{ obj.force_monitor }}"/>      
+      <variable name="bypass_media" value="{% if obj.bypass_media %}true{%else%}false{%endif%}"/> <!-- Interpretado pelo billing.py -->
+
+    </variables>
+  </user>
+</include>
+
+{% endfor %}

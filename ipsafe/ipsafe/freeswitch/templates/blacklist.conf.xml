@@ -1,0 +1,7 @@
+<configuration name="mod_blacklist.conf" description="Blacklist module">
+<lists>
+
+        <list name="Blacklisted" filename="/usr/local/freeswitch/conf/blacklist.list"/>
+
+</lists>
+</configuration>

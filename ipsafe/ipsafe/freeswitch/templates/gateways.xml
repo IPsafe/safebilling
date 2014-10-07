@@ -1,0 +1,40 @@
+{% for obj in list %}
+<include>
+      <gateway name="{{ obj.name }}">
+        {% if obj.fromuser %}
+        <param name="username" value="{{ obj.fromuser }}"/>
+        {% endif %}
+        <param name="password" value="{{ obj.password }}"/>
+        <param name="from-user" value="{{ obj.fromuser }}"/>
+        <param name="from-domain" value="{{ obj.fromdomain }}"/>
+        <param name="expire-seconds" value="600"/>
+        {% if obj.register %}
+        <param name="register" value="true"/>
+        {% else %}
+        <param name="register" value="false"/>
+        {% endif %}
+        <param name="retry-seconds" value="30"/>
+        <param name="extension" value="{{ obj.name }}"/>
+        {% if obj.host %}
+        <param name="register-proxy" value="{{ obj.host }}"/>
+        <param name="proxy" value="{{ obj.host }}"/>
+        {% endif %}
+        <param name="context" value="{{ obj.context }}"/>
+        <param name="ping" value="25"/>
+        <param name="inbound-codec-prefs" value="{{ obj.codec_inbound_string }}"/>
+        <param name="outbound-codec-prefs" value="{{ obj.codec_outbound_string }}"/>
+      </gateway>
+      <variables>
+      {% if obj.callerid %}<variable name="effective_caller_id_name" value="{{ obj.callerid }}"/>{% endif %}
+      {% if obj.callerid_number %}<variable name="effective_caller_id_number" value="{{ obj.callerid_number }}"/>{% endif %}
+      {% if obj.callerid %}<variable name="outbound_caller_id_name" value="{{ obj.callerid }}"/>{% endif %}
+      {% if obj.callerid_number %}<variable name="outbound_caller_id_number" value="{{ obj.callerid_number }}"/>{% endif %}
+        
+        {% for provider_values in obj.provider_values %}
+        <variable name="rategroup" value="{{ provider_values.rate_groups_id }}"/>
+        <variable name="provider_name" value="{{ provider_values.name }}"/>
+        <variable name="postpaid_limit" value="{{ provider_values.postpaid_limit }}"/>
+        {% endfor %}
+      </variables>
+</include>
+{% endfor %}

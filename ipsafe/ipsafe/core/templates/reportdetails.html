@@ -1,0 +1,89 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_static admin_modify bootstrapped_goodies_tags %}
+{% load url from future %}
+{% load admin_urls %}
+
+{% block content %}
+
+				<div class="page-header">
+					<legend>Relatório de Chamadas</legend>
+				</div>
+
+{% for obj in cdr %}
+					<strong>Cliente: </strong>{{ obj.customer }}<br>
+					<strong>Accountcode: </strong>{{ obj.accountcode }}<br>
+					<strong>Caller ID: </strong>{{ obj.caller_id }}<br>
+					<strong>Device: </strong>{{ obj.device }}<br>
+					<strong>Destino: </strong>{{ obj.destination_number }}<br>
+					<strong>LCR: </strong>{{ obj.lcr_name }}<br>
+					<strong>Grupo de Tarifas: </strong>{{ obj.rate_group }}<br>
+					<strong>Início: </strong>{{ obj.start_time|date:"d/m/Y H:i:s" }}<br>
+					<strong>Fim: </strong>{{ obj.end_time|date:"d/m/Y H:i:s" }}<br>
+					<strong>Billsec: </strong>{{ obj.billsec }}<br>
+					<strong>Duração: </strong>{{ obj.duration }}<br>
+					<strong>Provedor: </strong>{{ obj.provider }}<br>
+
+					<strong>Gateway: </strong>{{ obj.gateway }}<br>
+					<strong>Hangup Cause: </strong>{{ obj.hangup_cause }}<br>
+					<strong>Hangup Cause (q850): </strong>{{ obj.hangup_cause_q850 }}<br>
+					<strong>Hangup Commentary: </strong>{{ obj.hangup_commentary }}<br>
+					<strong>Call Commentary: </strong>{{ obj.commentary }}<br>
+					<strong>Remote media IP: </strong>{{ obj.remote_media_ip }}<br>
+					<strong>SIP Received IP: </strong>{{ obj.sip_received_ip }}<br>
+					<strong>SIP Via Host: </strong>{{ obj.sip_via_host }}<br>
+					<strong>SIP to Port: </strong>{{ obj.sip_to_port }}<br>
+					<strong>SIP User Agent: </strong>{{ obj.sip_user_agent }}<br>
+					<strong>SIP Contact URI: </strong>{{ obj.sip_contact_uri }}<br>
+
+					<strong>Endpoint Disposition: </strong>{{ obj.endpoint_disposition }}<br>
+					<strong>Hangup Disposition: </strong>{{ obj.hangup_disposition }}<br>
+					<strong>Read Codec: </strong>{{ obj.read_codec }}<br>
+					<strong>Write Codec: </strong>{{ obj.write_codec }}<br>
+					<strong>User Billsec: </strong>{{ obj.user_billsec }}<br>
+					<strong>Provider Billsec: </strong>{{ obj.provider_billsec }}<br>
+					<strong>Provider Cost: </strong>{{ obj.provider_cost }}<br>
+					<strong>User Cost: </strong>{{ obj.user_cost }}<br>
+
+					<strong>Provider Rate - Nome: </strong>{{ obj.provider_rate_name }}<br>
+					<strong>Provider Rate - Prefixo: </strong>{{ obj.provider_rate_prefix }}<br>
+					<strong>Provider Rate - Preço: </strong>{{ obj.provider_rate_price }}<br>
+					<strong>Provider Rate - Tempo Mínimo: </strong>{{ obj.provider_rate_min_time }}<br>
+					<strong>Provider Rate - Incremento: </strong>{{ obj.provider_rate_increment }}<br>
+					<strong>Provider Rate - Tags: </strong>{{ obj.provider_rate_tags }}<br>
+					<strong>Provider Rate - Gracetime: </strong>{{ obj.provider_rate_gracetime }}s<br>
+
+					<strong>User Rate - Nome: </strong>{{ obj.user_rate_name }}<br>
+					<strong>User Rate - Prefixo: </strong>{{ obj.user_rate_prefix }}<br>
+					<strong>User Rate - Preço: </strong>{{ obj.user_rate_price }}<br>
+					<strong>User Rate - Tempo mínimo: </strong>{{ obj.user_rate_min_time }}<br>
+					<strong>User Rate - Incremento: </strong>{{ obj.user_rate_increment }}<br>
+					<strong>User Rate - Tags: </strong>{{ obj.user_rate_tags }}<br>
+					<strong>User Rate - Gracetime: </strong>{{ obj.user_rate_gracetime }}s<br>
+
+					<strong>Progress Media Time (PDD): </strong>{{ obj.progressmedia_time }}<br>
+
+					<strong>UUID: </strong>{{ obj.uuid }}<br>
+					<strong>UUID Leg B: </strong>{{ obj.uuid_b }}<br>
+
+					<strong>CDR Object: </strong>{{ obj.cdr_object_id }}<br>
+
+
+{% endfor %}
+
+<hr noshade="noshade"/>
+{% for obj in cdr.details %}
+	{% if forloop.first %}<legend>Tentativas</legend>{% endif %}
+
+	<strong>Gateway: </strong>{{ obj.gateway }}<br>
+	<strong>Provider Rate Name: </strong>{{ obj.provider_rate_name }}<br>
+	<strong>Data: </strong>{{ obj.start_time|date:"d/m/Y H:i:s" }}<br>
+	<strong>Progress Media Time (PDD): </strong>{{ obj.progressmedia_time }}<br>
+	<strong>Endpoit Disposition: </strong>{{ obj.endpoint_disposition }}<br>
+	<strong>Hangup Disposition: </strong>{{ obj.hangup_disposition }}<br>
+	<strong>Hangup Cause: </strong>{{ obj.hangup_cause }}<br>
+	<strong>Hangup Cause (q850): </strong>{{ obj.hangup_cause_q850 }}<br>
+	<hr noshade="noshade"/>
+
+{% endfor %}
+
+{% endblock %}

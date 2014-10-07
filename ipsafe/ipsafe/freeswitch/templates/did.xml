@@ -1,0 +1,8 @@
+<include>
+	<extension name="public_did">
+		<condition field="destination_number" expression="^({{ did }})$">
+			<action application="set" data="domain_name=$${domain}"/>
+			<action application="transfer" data="1000 XML default"/>
+		</condition>
+	</extension>
+</include>

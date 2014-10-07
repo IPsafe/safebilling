@@ -1,0 +1,90 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_static admin_modify bootstrapped_goodies_tags %}
+{% load url from future %}
+{% load admin_urls %}
+{% load paginator_tags %}
+
+
+{% block content %}
+
+			<!-- Begin page content -->
+				<div class="page-header">
+					<legend>CDR</legend>
+					<p>
+						Exportar: <a href="/report/results/?csv=export"><img src="{{ STATIC_URL }}/img/csv.gif"/></a> 
+					</p>
+				</div>
+				<!--
+				<p class="muted" align="center">
+				Data: {{ datainicio }} / {{ datafim }}
+				</p>
+				-->
+
+                        Total de resultados: {{ count }}<br/>
+
+			<table class="table table-bordered" id="cdrtable">
+				<thead>
+					<th>Data</th>
+					<th>Usuário</th>
+					<th>Device</th>
+					<th>Destino</th>
+					<th>Provedor</th>
+					<th>LCR</th>
+					<th>Duração</th>
+					<th>Valor Usuário</th>
+					<th>Valor Provedor</th>
+                    <th>Lucro</th>
+					<th>Hangup Cause</th>					
+					<th>Endpoint Disposition</th>
+					<th>Observação</th>
+					<th>Detalhes</th>
+				</thead>
+				{% for obj in page_obj %}
+				<tr>
+					<td>{{ obj.start_time|date:"d/m/Y H:i:s" }}</td>
+					<td>{{ obj.customer }}</td>
+					<td>{{ obj.device }}</td>
+					<td>{{ obj.destination_number }}</td>
+					<td>{{ obj.provider }}</td>
+					<td>{{ obj.lcr_name }}</td>
+					<td>{{ obj.billsec }}</td>
+					<td>{{ obj.user_cost }}</td>
+					<td>{{ obj.provider_cost }}</td>
+                    <td>{{ obj.profit }}</td>
+					<td>{{ obj.hangup_cause }} <{{ obj.hangup_cause_q850 }}></td>
+					<td> {{ obj.endpoint_disposition }}</td>
+					<td>{{ obj.hangup_commentary }} {{ obj.commentary }}</td>
+					<td>
+		                <a href="/report/details/?uuid={{ obj.uuid }}" class="btn btn-small">
+		                    <i class="btn-icon-only icon-search"></i>Detalhes
+		                </a>
+					</td>
+				</tr>
+				{%endfor%}
+
+
+				{% if page_obj %}
+				<tr>
+					<td>Total</td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td><strong>{{ cost_total.billsec_total }}</strong></td>
+					<td><strong>{{ cost_total.user_cost_total }}</strong></td>
+					<td><strong>{{ cost_total.provider_cost_total }}</strong></td>
+                    <td><strong>{{ cost_total.profit_total }}</strong></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				{% endif %}
+
+
+			</table>
+			{% paginate request paginator page_obj %}			
+
+
+{% endblock %}

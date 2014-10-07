@@ -1,0 +1,25 @@
+ /var/log/celery/*.log {
+		daily
+		rotate 10
+		compress
+		dateext
+		size 50M
+        postrotate
+                /etc/init.d/celeryd stop
+                /etc/init.d/celerybeat stop
+                /etc/init.d/celeryd start
+                /etc/init.d/celerybeat start
+        endscript
+}
+
+
+/var/log/billing.log {
+		daily
+		rotate 10
+		compress
+		dateext
+		size 50M
+        postrotate
+                 /etc/init.d/billing restart
+        endscript
+}

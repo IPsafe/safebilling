@@ -1,0 +1,16 @@
+INSERT INTO rate_tag(tag, description) values ('ADP3 Telecom','ADP3 Telecom');
+INSERT INTO rate_tag(tag, description) values ('Claro','Claro');
+INSERT INTO rate_tag(tag, description) values ('CTBC','CTBC CELULAR');
+INSERT INTO rate_tag(tag, description) values ('Datora','Datora - SP');
+INSERT INTO rate_tag(tag, description) values ('Grupo G1','G1 Informatica e Telecomunicacoes');
+INSERT INTO rate_tag(tag, description) values ('Nextel','Nextel');
+INSERT INTO rate_tag(tag, description) values ('OI','OI');
+INSERT INTO rate_tag(tag, description) values ('Porto Conecta','Porto Conecta - SP');
+INSERT INTO rate_tag(tag, description) values ('Sercomtel','Sercomtel Celular');
+INSERT INTO rate_tag(tag, description) values ('Sitecnet','Sitecnet');
+INSERT INTO rate_tag(tag, description) values ('Fale 65','Telecom 65');
+INSERT INTO rate_tag(tag, description) values ('VIVO','Telefonica Brasil');
+INSERT INTO rate_tag(tag, description) values ('Terapar','Terapar');
+INSERT INTO rate_tag(tag, description) values ('TIM','Tim');
+INSERT INTO rate_tag(tag, description) values ('Movel','Movel');
+INSERT INTO rate_tag(tag, description) values ('Fixo','Fix');

@@ -1,0 +1,21 @@
+# Where the Django project is.
+CELERYBEAT_CHDIR="/usr/local/src/ipsafe/ipsafe"
+
+# Name of the projects settings module.
+export DJANGO_SETTINGS_MODULE="ipsafe.settings"
+
+# Path to celerybeat
+CELERYBEAT="/usr/share/virtualenvs/ipsafe/bin/python $CELERYBEAT_CHDIR/manage.py celerybeat"
+
+# Extra arguments to celerybeat
+CELERYBEAT_OPTS="--schedule=/var/run/celery/celerybeat-schedule"
+
+# Name of the celery config module.#
+CELERY_CONFIG_MODULE="celeryconfig"
+
+# Workers should run as an unprivileged user.
+CELERYBEAT_USER="celery"
+CELERYBEAT_GROUP="celery"
+
+# Name of the projects settings module.
+export DJANGO_SETTINGS_MODULE='ipsafe.settings'
